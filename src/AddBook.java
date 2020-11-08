@@ -295,7 +295,12 @@ public class AddBook {
 
                 if(check[0]) {
                     if(check[1]) {          //  New Author
-                        this.newAuthor(prenom, nom, Integer.parseInt(bYear), 0);
+                        try {
+                            this.newAuthor(prenom, nom, Integer.parseInt(bYear), 0);
+                        } catch (SQLException throwables) {
+                            JOptionPane.showMessageDialog(null, "New Author Error");
+                            throwables.printStackTrace();
+                        }
                     } else {                        //  Registered Author
                         try {
                             this.registeredAuthor(prenom, nom, Integer.parseInt(bYear));
@@ -340,8 +345,8 @@ public class AddBook {
     }
 
 
-    public void newAuthor(String prenom, String nom, int bYear, int id_auteur) {
-        NewAuthorInfo nai = new NewAuthorInfo();
+    public void newAuthor(String prenom, String nom, int bYear, int id_auteur) throws SQLException {
+        NewAuthorInfo nai = new NewAuthorInfo(this.i);
         int option = JOptionPane.showConfirmDialog(null, nai.panel,
                 "Enter the information", JOptionPane.OK_CANCEL_OPTION);
 
@@ -351,7 +356,7 @@ public class AddBook {
             String isbn = nai.ISBNField.getText();
             String eName = nai.eNameField.getText();
             String e_year = nai.eYearField.getText();
-            String genre = nai.genreField.getText();
+            String genre = (String)nai.genreField.getSelectedItem();
             String number = nai.numberField.getText();
 
             if (title.equals("") || p_year.equals("") || isbn.equals("") || eName.equals("") || e_year.equals("") || genre.equals("") || number.equals("")) {
@@ -386,19 +391,6 @@ public class AddBook {
 
                         //   Auteur Update
                         this.updateAuthor(id_auteur, prenom, nom, bYear);
-                    }
-
-                    //   Genre Check
-                    //   Change the first letter to UPPERCASE and the others to lowercase
-                    genre = genre.substring(0, 1).toUpperCase() + genre.substring(1).toLowerCase();
-                    this.i.sb.setLength(0);
-                    this.i.sb.append("SELECT * FROM mots_cles WHERE mot = ");
-                    this.i.sb.append(genre);
-                    sql = i.sb.toString();
-                    result = i.stmt.executeQuery(sql);
-
-                    if (result.next()) {
-                        this.updateKeyword(genre);          ///  If the keyword is not registered, add it to the table
                     }
 
                     //   Get id_oeuvre
@@ -485,16 +477,6 @@ public class AddBook {
         String sql = i.sb.toString();
         i.stmt.executeUpdate(sql);
 
-        i.stmt.close();
-    }
-
-    public void updateKeyword(String genre) throws SQLException {
-        i.sb.setLength(0);
-        i.sb.append("INSERT INTO mots_cles VALUES ('");
-        i.sb.append(genre); i.sb.append("')");
-        String sql = i.sb.toString();
-
-        i.stmt.executeUpdate(sql);
         i.stmt.close();
     }
 

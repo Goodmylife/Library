@@ -1,17 +1,22 @@
 import javax.swing.*;
+import javax.xml.transform.Result;
 import java.awt.*;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class NewAuthorInfo {
+    private IHM i;
     JPanel panel;
     JTextField titleField;
     JTextField pYearField;
     JTextField ISBNField;
     JTextField eNameField;
     JTextField eYearField;
-    JTextField genreField;
+    JComboBox genreField;
     JTextField numberField;
 
-    public NewAuthorInfo() {
+    public NewAuthorInfo(IHM gui) throws SQLException {
+        this.i = gui;
         this.panel = new JPanel();
         this.panel.setLayout(new BoxLayout(this.panel, BoxLayout.Y_AXIS));
 
@@ -20,7 +25,7 @@ public class NewAuthorInfo {
         this.ISBNField = new JTextField(10);
         this.eNameField = new JTextField(10);
         this.eYearField = new JTextField(10);
-        this.genreField = new JTextField(10);
+        this.genreField = new JComboBox(this.getGenre());
         this.numberField = new JTextField(10);
 
         ///   Oeuvre
@@ -79,5 +84,17 @@ public class NewAuthorInfo {
         panel4.add(this.numberField);
         panelNumber.add(panel4);
         this.panel.add(panelNumber);
+    }
+
+    public String[] getGenre() throws SQLException {
+        String sql = "SELECT * FROM mots_cles";
+        ResultSet result = this.i.stmt.executeQuery(sql);
+
+        String[] combodata = new String[5];
+
+        for (int i = 0; result.next(); i++) {
+            combodata[i] = result.getString("mot");
+        }
+        return combodata;
     }
 }
