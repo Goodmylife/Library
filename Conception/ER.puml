@@ -1,0 +1,93 @@
+@startuml
+
+entity Auteur {
+    + id_auteur [PK]: int
+    --
+    prénom: String
+    nom: String
+    année_naissance: int
+}
+
+entity Rédiger {
+    # id_auteur [FK(Auteur, id_auteur)]: int
+    # id_œuvre [FK(œuvre, id_œuvre)]: int
+}
+
+
+entity Œuvre {
+    + id_œuvre [PK]: int
+    --
+    title: String
+    année: int
+}
+
+entity Œuvre_Mots_Clés {
+    # id_œuvre [FK(Œuvre, id_œuvre)]: int
+    # mot [FK(Mots_Clés, mot)]: String
+}
+
+entity Mots_Clés {
+    + mot [PK]: String
+}
+
+entity Edition {
+    + ISBN [PK]: int
+    --
+    nom_éditeur: String
+    année_édition: int
+    # id_œuvre [FK(Œuvre, id_œuvre)]: int
+}
+
+entity Livre {
+    + id_livre [PK]: int
+    --
+    # ISBN [FK(Edition, ISBN)]: int
+}
+
+entity Emprunter {
+    # id_livre [FK(Livre, id_livre): int
+    # id_usager [FK(Usager, id_usager)]: int
+    date_début: Date
+    date_fin: Date
+}
+
+entity Usager {
+    + id_usager [PK]: int
+    --
+    prénom: String
+    nom: String
+    email: String
+    # nom_catégorie [FK(catégorie, nom_catégorie)]: String
+}
+
+entity Catégorie {
+    + nom_catégorie [PK]: String
+    --
+    nombre_maximale: int
+    durée_maximale: int
+}
+
+entity Liste_Rouge{
+    + id_liste [PK]: int
+    --
+    # id_usager [FK(Usager, id_usager)]: int
+    date_début: Date
+    date_fin: Date
+}
+
+
+Auteur - Rédiger
+Rédiger - Œuvre
+Œuvre - Œuvre_Mots_Clés
+Œuvre_Mots_Clés - Mots_Clés
+Œuvre -- Edition
+Edition -right- Livre
+Livre -- Emprunter
+Emprunter -- Usager
+Usager - Catégorie
+Usager -left- Liste_Rouge
+
+
+
+
+@enduml

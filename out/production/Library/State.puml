@@ -1,0 +1,89 @@
+@startuml
+'scale 350 width
+
+[*] --> IHMLogin
+
+state IHMLogin {
+    [*] --> Login
+    state testLogin <<choice>>
+    state testRole <<choice>>
+
+    Login -> testLogin : check password
+
+    testLogin --> Login : [incorrect password]
+    testLogin --> testRole : [correct password]
+    testRole --> IHMAdmin : [Role == Admin]
+    testRole --> IHMAdherent : [Role == Adherent]
+}
+
+state IHMAdmin {
+    [*] -> InitBiblio
+    state loadBiblio <<choice>>
+
+    InitBiblio --> loadBiblio : loadBiblio
+    InitBiblio -> BiblioLoaded : createBiblio
+
+    BiblioLoaded --> InitBiblio : close
+    BiblioLoaded -u-> SaveBiblio : save
+
+    loadBiblio -> InitBiblio : [error]
+    loadBiblio -> BiblioLoaded :  [OK]
+
+    SaveBiblio -d-> BiblioLoaded : ok
+}
+
+state IHMAdherent {
+    state SearchBook
+    state BorrowBook
+
+    SearchBook -> BorrowBook : borrow
+    --
+    state MyAccount {
+        state Information
+        ||
+        state MyBorrow
+    }
+}
+
+
+state ManageBooks {
+    state AddBook
+    --
+    state RemoveBook
+    --
+    state BookDetails {
+        [*] -> EditBooks
+    }
+}
+
+state ManageUsers {
+    state AddUser
+    --
+    state RemoveUser
+    --
+    state UserDetails {
+        [*] -> EditUser
+    }
+}
+
+state ManageBorrows {
+    state ReturnBorrow
+    --
+    state ValidateBorrow
+}
+
+BiblioLoaded -> ManageBooks : manage books
+BiblioLoaded --> ManageUsers : manage users
+BiblioLoaded ---> ManageBorrows : manage borrows
+
+ManageBooks --> BiblioLoaded : cancel
+ManageBooks --> BiblioLoaded : ok
+
+ManageUsers ---> BiblioLoaded : cancel
+ManageUsers ---> BiblioLoaded : ok
+
+
+ManageBorrows --> BiblioLoaded : cancel
+ManageBorrows --> BiblioLoaded : ok
+
+@enduml

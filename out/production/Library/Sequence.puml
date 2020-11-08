@@ -1,0 +1,26 @@
+@startuml
+
+actor Usager
+boundary "IHM Principale"
+boundary "IHM Livre"
+control Controleur
+database DB
+collections Livres
+
+Usager --> "IHM Principale" : menu
+"IHM Principale" -> Controleur : callback
+Controleur -> Controleur : changement d'etat
+Controleur -> "IHM Livre" : rendre visible
+"IHM Livre" -> Controleur : get livres
+Controleur -> DB : requete SQL
+DB --> Controleur : response SQL
+
+Controleur -> Livres : <<creation>>
+
+Controleur --> "IHM Livre" : return
+"IHM Livre" -> "IHM Livre" : mise a jour
+"IHM Livre" --> Usager : affichage
+
+
+
+@enduml

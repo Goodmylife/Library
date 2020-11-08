@@ -1,0 +1,53 @@
+@startuml
+'scale 350 width
+
+[*] --> IHMLogin
+
+state IHMLogin {
+    [*] --> AdminLogin  : [Mode = Admin]
+    [*] --> AdherentLogin : [Mode = Adherent]
+
+    state testLoginAdmin <<choice>>
+    state testLoginAdherent <<choice>>
+
+    AdminLogin -> testLoginAdmin : check password
+    AdherentLogin -> testLoginAdherent : check password
+
+    testLoginAdmin --> AdminLogin : [incorrect password]
+    testLoginAdherent -> AdherentLogin : [incorrect password]
+    testLoginAdmin --> IHMAdmin : [correct password]
+    testLoginAdherent --> IHMAdherent : [correct password]
+}
+
+
+
+
+state IHMAdmin {
+    state AddBook
+    ||
+    state RemoveBook
+    ||
+    state ManageUsers {
+        state AddUser
+        ||
+        state RemoveUser
+        ||
+        state RedList
+    }
+}
+
+state IHMAdherent {
+    state SearchBook
+    state BorrowBook
+
+    SearchBook -> BorrowBook : borrow
+    ||
+    state PersonalInfo
+    ||
+    state MyBorrowing
+    state ReturnBook
+    MyBorrowing -> ReturnBook : return
+}
+
+
+@enduml

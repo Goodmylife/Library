@@ -1,0 +1,34 @@
+@startuml
+skinparam backgroundColor transparent
+skinparam {
+	ArrowColor skyblue
+	ActorBorderColor DeepSkyBlue
+	ActorBackgroundColor aqua
+	ActorFontColor white
+}
+
+' Login
+(Login) .> Adherent: <color:white><<includes>>
+(Login) ..> Admin : <color:white><<includes>
+
+Admin -|> Adherent
+
+Adherent -- (Lister des livres disponibles)
+(Lister des livres disponibles) .> (Emprunter un livre) : <color:white><<extends>>
+(Consulter ses emprunts) ...> (Retourner un livre) : <color:white><<extends>>
+(Lister des livres disponibles) ...> (Rechercher des livres) : <color:white><<extends>>
+(Rechercher des livres)  ...> (Emprunter un livre) : <color:white><<extends>>
+Adherent - (Consulter ses informations personnels)
+Adherent -- (Consulter ses emprunts)
+
+
+Admin -- (Ajouter un livre)
+Admin --- (Supprimer un livre)
+Admin -- (Lister les adherents)
+(Lister les adherents) ...> (Supprimer un adherent) : <color:white><<extends>>
+(Lister les adherents) ...> (Creer un adherent) : <color:white><<extends>>
+(Lister les adherents) ...> (Mettre en liste rouge) : <color:white><<extends>>
+
+
+
+@enduml
