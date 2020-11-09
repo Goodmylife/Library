@@ -22,9 +22,12 @@ Adherent - (Consulter ses informations personnels)
 Adherent -- (Consulter ses emprunts)
 
 
-Admin -- (Ajouter un livre)
+
+Admin -- (Lister des livres)
 Admin --- (Supprimer un livre)
 Admin -- (Lister les adherents)
+Admin -- (Gerer une categorie)
+(Lister des livres) ..> (Ajouter un livre) : <color: white><<extends>>
 (Lister les adherents) ...> (Supprimer un adherent) : <color:white><<extends>>
 (Lister les adherents) ...> (Creer un adherent) : <color:white><<extends>>
 (Lister les adherents) ...> (Mettre en liste rouge) : <color:white><<extends>>

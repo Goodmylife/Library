@@ -47,6 +47,8 @@ state IHMAdherent {
     state MyBorrowing
     state ReturnBook
     MyBorrowing -> ReturnBook : return
+    ||
+    state Category
 }
 
 

@@ -60,11 +60,11 @@ public class IHM extends JFrame {
 
         int loopCount = 0;              //  Count the number of the login sent
         String pwd;                     //  Password obtained by SQL
-        String category;                //  Category obtained by SQL
+        String role;                    //  Role obtained by SQL
 
         while(result.next()) {
                 pwd = result.getString("password");
-                category = result.getString("nom_categorie");
+                role = result.getString("role");
 
                 //  Authentication: check whether or not the password is correct
                 if (pwd.equals(password)) {
@@ -73,7 +73,7 @@ public class IHM extends JFrame {
                     this.IDuser = Integer.parseInt(result.getString("id_usager"));
 
                     //  Depending on the role and the mode, the window after login differs
-                    switch(category) {
+                    switch(role) {
                         // If the user is a member
                         case "Adherent":
                             if (!this.adminFlag) {                  // If the current mode is of member
@@ -233,6 +233,12 @@ public class IHM extends JFrame {
                 }
                 case "Email" -> {
                     this.sb.append("email like ");
+                    this.sb.append("'%");
+                    this.sb.append(keyword);
+                    this.sb.append("%'");
+                }
+                case "Category" -> {
+                    this.sb.append("nom_categorie like ");
                     this.sb.append("'%");
                     this.sb.append(keyword);
                     this.sb.append("%'");

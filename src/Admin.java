@@ -1,4 +1,5 @@
 import javax.swing.*;
+import java.awt.*;
 import java.sql.SQLException;
 
 public class Admin {
@@ -11,6 +12,7 @@ public class Admin {
         AddBook ab = new AddBook(gui, this.tabbedpane);
         new DeleteBook(gui, this.tabbedpane);
         AdherentInfo ai = new AdherentInfo(gui, this.tabbedpane);
+        new Category(gui, this.tabbedpane);
         new Logout(gui, this.tabbedpane);
 
 

@@ -45,7 +45,7 @@ public class AdherentInfo {
         JTextField searchBar = new JTextField(20);
 
         ///  Combo Box to choose the category of search
-        String[] combodata = {"Prenom", "Nom", "Email"};
+        String[] combodata = {"Prenom", "Nom", "Email", "Category"};
         JComboBox combo = new JComboBox(combodata);
 
         ///  Button for Search
@@ -94,7 +94,7 @@ public class AdherentInfo {
         output.setPreferredSize(new Dimension(800, 300));
 
         //  Table Columns
-        String[] columnBooks = {"ID", "Prenom", "Nom", "Email", "Password", "Max", "Duree", "Red List From", "Red List Until"};
+        String[] columnBooks = {"ID", "Prenom", "Nom", "Email", "Password", "Category", "Max", "Duree", "Red List From", "Red List Until"};
         this.tableModel = new DefaultTableModel(columnBooks, 0);
 
         ///  Instantiate the table to show the result
@@ -122,8 +122,8 @@ public class AdherentInfo {
                 JOptionPane.showMessageDialog(null, "Choose a user");
             } else {
                 String id_usager = this.table.getValueAt(row, 0).toString();
-                String start = String.valueOf(this.table.getValueAt(row, 7));
-                String end = String.valueOf(this.table.getValueAt(row, 8));
+                String start = String.valueOf(this.table.getValueAt(row, 8));
+                String end = String.valueOf(this.table.getValueAt(row, 9));
 
                 if (!start.equals("null")) {    // The user has been on the list
                     //  true: add the user to the list,  false: change the period of the list
@@ -250,11 +250,12 @@ public class AdherentInfo {
             String nom = result.getString("nom");
             String email = result.getString("email");
             String password = result.getString("password");
+            String categorie = result.getString("nom_categorie");
             String max = result.getString("nombre_emprunts");
             String duree = result.getString("duree_emprunts");
             String rlFrom = result.getString("MAX(date_debut)");
             String rlUntil = result.getString("MAX(date_fin)");
-            String[] row = {id, prenom, nom, email, password, max, duree, rlFrom, rlUntil};
+            String[] row = {id, prenom, nom, email, password, categorie, max, duree, rlFrom, rlUntil};
             this.tableModel.addRow(row);
         }
 
