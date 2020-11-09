@@ -33,7 +33,7 @@ public class IHM extends JFrame {
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         try {
-            this.conn = DriverManager.getConnection("jdbc:sqlite:./bibliotheque.db");
+            this.conn = DriverManager.getConnection("jdbc:sqlite:./Library.db");
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, "DATABASE CONNECTION ERROR!");
             e.printStackTrace();
