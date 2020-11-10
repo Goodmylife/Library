@@ -5,7 +5,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class AdherentInfo {
     protected final IHM i;
@@ -162,8 +164,14 @@ public class AdherentInfo {
 
         //////     Add Button Action      ///////
         button.addActionListener(e -> {
-            AddAdherent aa = new AddAdherent();
-            aa.action(this);
+            AddAdherent aa = null;
+            try {
+                aa = new AddAdherent(this);
+            } catch (SQLException throwables) {
+                JOptionPane.showMessageDialog(null, "Error");
+                throwables.printStackTrace();
+            }
+            aa.action();
         });
         this.tab.add(button);
     }
@@ -291,6 +299,7 @@ public class AdherentInfo {
                 ///  Update liste_rouge
                 this.insertRedList(Integer.parseInt(id_usager), id_liste, start, end);
                 this.adherentInfo(null, null);
+                JOptionPane.showMessageDialog(null, "The date has been updated");
             } catch (SQLException throwables) {
                 JOptionPane.showMessageDialog(null, "Red List Management Error");
                 throwables.printStackTrace();

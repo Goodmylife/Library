@@ -283,6 +283,9 @@ public class AddBook {
         button.addActionListener(e -> {
             AuthorInfo ai = new AuthorInfo();
 
+            UIManager.put("OptionPane.cancelButtonText", "Cancel");
+            UIManager.put("OptionPane.okButtonText", "OK");
+
             int option = JOptionPane.showConfirmDialog(null, ai.panel,
                     "Enter the information on the author", JOptionPane.OK_CANCEL_OPTION);
 
@@ -347,6 +350,7 @@ public class AddBook {
 
     public void newAuthor(String prenom, String nom, int bYear, int id_auteur) throws SQLException {
         NewAuthorInfo nai = new NewAuthorInfo(this.i);
+
         int option = JOptionPane.showConfirmDialog(null, nai.panel,
                 "Enter the information", JOptionPane.OK_CANCEL_OPTION);
 
@@ -373,7 +377,7 @@ public class AddBook {
                     //   ISBN Check
                     this.i.sb.setLength(0);
                     this.i.sb.append("SELECT * FROM edition WHERE ISBN = ");
-                    this.i.sb.append(isbn);
+                    this.i.sb.append(ISBN);
                     String sql = this.i.sb.toString();
                     ResultSet result = this.i.stmt.executeQuery(sql);
 
@@ -394,10 +398,10 @@ public class AddBook {
                     }
 
                     //   Get id_oeuvre
-                    sql = "SELECT COUNT(id_oeuvre) count FROM oeuvre";
+                    sql = "SELECT * FROM oeuvre ORDER BY id_oeuvre DESC LIMIT 1";
                     result = this.i.stmt.executeQuery(sql);
                     result.next();
-                    int id_oeuvre = result.getInt("count") + 1;
+                    int id_oeuvre = result.getInt("id_oeuvre") + 1;
 
                     // Oeuvre - Keyword Update
                     this.updateOeuvreKeyword(id_oeuvre, genre);
@@ -436,6 +440,7 @@ public class AddBook {
 
     public void registeredAuthor(String prenom, String nom, int bYear) throws SQLException {
         AddBook ab = new AddBook(this.i, prenom + " " + nom, bYear);
+
         int option = JOptionPane.showConfirmDialog(null, ab.tab,
                 "Choose the author", JOptionPane.OK_CANCEL_OPTION);
 
@@ -446,7 +451,6 @@ public class AddBook {
                 JOptionPane.showMessageDialog(null, "Choose a book");
             } else {
                 int ISBN = Integer.parseInt(ab.table.getValueAt(row, 5).toString());
-                System.out.println(ISBN);
 
                 ///   Get the author ID
                 this.i.sb.setLength(0);
@@ -457,7 +461,6 @@ public class AddBook {
                 result.next();
                 int id_auteur = result.getInt("id_auteur");
 
-                System.out.println(id_auteur);
 
                 this.newAuthor(prenom, nom, bYear, id_auteur);
             }
@@ -492,10 +495,12 @@ public class AddBook {
     }
 
     public void updateOeuvre(int id_oeuvre, String title, int pYear) throws SQLException {
+        String title_escape = title.replace("'", "''");
+
         i.sb.setLength(0);
         i.sb.append("INSERT INTO oeuvre VALUES (");
         i.sb.append(id_oeuvre);  i.sb.append(", '");
-        i.sb.append(title);   i.sb.append("', ");
+        i.sb.append(title_escape);   i.sb.append("', ");
         i.sb.append(pYear);   i.sb.append(")");
 
         String sql =  i.sb.toString();

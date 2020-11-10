@@ -1,0 +1,61 @@
+@startuml
+hide footbox
+skinparam backgroundColor transparent
+skinparam {
+
+	ArrowColor skyblue
+	ActorBorderColor DeepSkyBlue
+	ActorBackgroundColor aqua
+	ActorFontColor white
+
+	BoundaryBorderColor skyblue
+    BoundaryBorderColor DeepSkyBlue
+    BoundaryFontColor white
+
+    ControlBorderColor skyblue
+    ControlBorderColor DeepSkyBlue
+    ControlFontColor white
+
+    DatabaseFontColor white
+    DatabaseBorderColor skyblue
+
+    AltBackgroundColor green
+}
+
+skinparam sequence {
+    LifeLineBorderColor skyblue
+}
+
+actor Admin
+boundary "IHM Livre"
+control Controleur
+database DB
+collections Tables
+
+Admin -> "IHM Livre" : <color:white> Borrow (Input: Author Info)
+"IHM Livre" -> Controleur : <color:white> Callback
+Controleur -> DB : <color:white> SQL Query
+DB --> Controleur : <color:white> SQL Response
+Controleur -> Controleur : <color:white> Check the Existence of the Author
+Controleur --> "IHM Livre" : <color:white> Return
+
+
+
+alt Registered Author
+"IHM Livre" -> Admin : Require Author Selection
+Admin -> "IHM Livre" : Select Author
+"IHM Livre" -> Controleur : Callback
+Controleur -> DB : SQL Query
+DB --> Controleur : SQL Response
+Controleur --> "IHM Livre" : Return
+end
+
+"IHM Livre" -> Admin : <color:white> Require Other Info
+Admin -> "IHM Livre" : <color:white> Input: Book Info
+"IHM Livre" -> Controleur : <color:white> Callback
+Controleur -> DB : <color:white> SQL Query
+DB -> Tables : <color:white> Creation/Update
+"IHM Livre" -> "IHM Livre" : <color:white> Update
+"IHM Livre" --> Admin : <color:white> Show Window
+
+@enduml

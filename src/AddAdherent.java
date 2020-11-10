@@ -2,6 +2,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class AddAdherent {
     JPanel panel;
@@ -9,8 +11,11 @@ public class AddAdherent {
     JTextField nomField;
     JTextField emailField;
     JTextField passwordField;
+    JComboBox combo;
+    AdherentInfo ai;
 
-    public AddAdherent() {
+    public AddAdherent(AdherentInfo ai) throws SQLException {
+        this.ai = ai;
         this.panel = new JPanel();
         this.panel.setLayout(new BoxLayout(this.panel, BoxLayout.Y_AXIS));
 
@@ -18,6 +23,8 @@ public class AddAdherent {
         this.nomField = new JTextField(10);
         this.emailField = new JTextField(10);
         this.passwordField = new JTextField(10);
+
+
 
         JPanel panel1 = new JPanel();
         JLabel label1 = new JLabel("Prenom");
@@ -46,16 +53,26 @@ public class AddAdherent {
         panel4.add(label4);
         panel4.add(this.passwordField);
         this.panel.add(panel4);
+
+        String[] combodata = this.getCategory();
+        this.combo = new JComboBox(combodata);
+        JPanel panel5 = new JPanel();
+        JLabel label5 = new JLabel("Category");
+        label5.setPreferredSize(new Dimension(100, 10));
+        panel5.add(label5);
+        panel5.add(this.combo);
+        this.panel.add(panel5);
     }
 
-    public void action(AdherentInfo ai) {
+    public void action() {
         int option = JOptionPane.showConfirmDialog(null, this.panel,
-                "From and Until when is the user on the Red List?", JOptionPane.OK_CANCEL_OPTION);
+                "Enter the information", JOptionPane.OK_CANCEL_OPTION);
         if (option == JOptionPane.OK_OPTION) {
             String prenom = this.prenomField.getText();
             String nom = this.nomField.getText();
             String email = this.emailField.getText();
             String password = this.passwordField.getText();
+            String category = this.combo.getSelectedItem().toString();
 
             if (prenom.equals("") || nom.equals("") || email.equals("") || password.equals("")) {
                 JOptionPane.showMessageDialog(null, "Fill in the blank");
@@ -77,9 +94,9 @@ public class AddAdherent {
                 ai.i.sb.append(prenom); ai.i.sb.append("', '");
                 ai.i.sb.append(nom); ai.i.sb.append("', '");
                 ai.i.sb.append(email); ai.i.sb.append("', '");
-                ai.i.sb.append("Adherent', '");
-                ai.i.sb.append(password);
-                ai.i.sb.append("')");
+                ai.i.sb.append(category); ai.i.sb.append("', '");
+                ai.i.sb.append(password); ai.i.sb.append("', '");
+                ai.i.sb.append("Adherent')");
                 sql = ai.i.sb.toString();
                 ai.i.stmt.executeUpdate(sql);
 
@@ -90,5 +107,17 @@ public class AddAdherent {
                 throwables.printStackTrace();
             }
         }
+    }
+    public String[] getCategory() throws SQLException {
+        List<String> list = new ArrayList<String>();
+        String sql = "SELECT * FROM categorie";
+        ResultSet result = this.ai.i.stmt.executeQuery(sql);
+
+        while(result.next()) {
+            list.add(result.getString("nom_categorie"));
+        }
+        this.ai.i.stmt.close();
+        result.close();
+        return list.toArray(new String[0]);
     }
 }

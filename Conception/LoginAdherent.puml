@@ -1,0 +1,49 @@
+@startuml
+hide footbox
+skinparam backgroundColor transparent
+skinparam {
+
+	ArrowColor skyblue
+	ActorBorderColor DeepSkyBlue
+	ActorBackgroundColor aqua
+	ActorFontColor white
+
+	BoundaryBorderColor skyblue
+    BoundaryBorderColor DeepSkyBlue
+    BoundaryFontColor white
+
+    ControlBorderColor skyblue
+    ControlBorderColor DeepSkyBlue
+    ControlFontColor white
+
+    DatabaseFontColor white
+    DatabaseBorderColor skyblue
+
+    AltBackgroundColor green
+}
+
+skinparam sequence {
+    LifeLineBorderColor skyblue
+}
+
+actor Adherent
+boundary "IHM Principale"
+boundary "IHM Adherent"
+control Controleur
+database DB
+
+Adherent -> "IHM Principale" : <color: white>Enter Login & Password
+"IHM Principale" -> Controleur : <color: white>Callback
+Controleur -> DB : <color: white>SQL Query
+DB --> Controleur : <color: white>SQL Response
+Controleur -> Controleur : <color: white>Verification
+Controleur --> "IHM Principale" : <color: white>Return
+
+alt  Authentification Success
+"IHM Principale" -> "IHM Adherent" : Window Change
+"IHM Adherent" --> Adherent : Show the Window
+else Authentification Failure
+"IHM Principale" --> Adherent : Show the Failure Message
+end
+
+@enduml

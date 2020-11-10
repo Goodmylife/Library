@@ -121,9 +121,9 @@ public class IHM extends JFrame {
     public boolean redList() {
         try {
             this.sb.setLength(0);
-            this.sb.append("SELECT *, MAX(date_debut), MAX(date_fin) FROM liste_rouge WHERE id_usager = ");
+            this.sb.append("SELECT *, MAX(date_debut), MAX(date_fin) m FROM liste_rouge WHERE id_usager = ");
             this.sb.append(this.IDuser);
-            this.sb.append(" GROUP BY id_usager");
+            this.sb.append(" GROUP BY id_usager HAVING MAX(date_fin) > CURRENT_DATE");
             String sql = this.sb.toString();
             ResultSet result = this.stmt.executeQuery(sql);
 

@@ -1,0 +1,56 @@
+@startuml
+hide footbox
+skinparam backgroundColor transparent
+skinparam {
+
+	ArrowColor skyblue
+	ActorBorderColor DeepSkyBlue
+	ActorBackgroundColor aqua
+	ActorFontColor white
+
+	BoundaryBorderColor skyblue
+    BoundaryBorderColor DeepSkyBlue
+    BoundaryFontColor white
+
+    ControlBorderColor skyblue
+    ControlBorderColor DeepSkyBlue
+    ControlFontColor white
+
+    DatabaseFontColor white
+    DatabaseBorderColor skyblue
+
+    AltBackgroundColor green
+}
+
+skinparam sequence {
+    LifeLineBorderColor skyblue
+}
+
+actor Adherent
+boundary "IHM Livre"
+control Controleur
+database DB
+collections Emprunter
+
+Adherent -> "IHM Livre" : <color:white> Borrow Book
+"IHM Livre" -> Controleur : <color:white> Callback
+Controleur -> DB : <color:white> SQL Query
+DB --> Controleur : <color:white> SQL Response
+Controleur -> Controleur : <color:white> Check Red List
+
+Controleur -> DB : <color:white> SQL Query
+DB --> Controleur : <color:white> SQL Response
+Controleur -> Controleur : <color:white> Check Maximum Number
+
+Controleur -> DB : <color:white> SQL Query
+DB -> Emprunter : <color:white> Creation
+"IHM Livre" -> "IHM Livre" : <color: white> Update
+
+"IHM Livre" --> Adherent : <color:white> Show Window
+
+
+
+
+
+
+@enduml

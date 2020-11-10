@@ -150,6 +150,7 @@ public class BookList {
                     try {
                         this.updateBookList(null, null);
                         JOptionPane.showMessageDialog(null, "The data has been updated");
+                        this.i.isupdate = false;
                     } catch (SQLException e1) {
                         JOptionPane.showMessageDialog(null, "Updating failed");
                         e1.printStackTrace();

@@ -123,6 +123,8 @@ public class MyBorrowing {
             this.i.nb_borrowed--;
 
             this.i.stmt.close();
+            JOptionPane.showMessageDialog(null, "The data has been updated");
+            this.i.isupdate = true;
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, "Returning failed");
             e.printStackTrace();
